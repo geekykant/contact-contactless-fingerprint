@@ -11,6 +11,7 @@
 
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')}}">
   <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.css" rel="stylesheet">
 </head>
 
 <body>
@@ -74,63 +75,36 @@
   <div class="min-h-0 py-10 px-60 grid grid-cols-2">
     <div x-data="{photoName: null, photoPreview: null}" class="">
       <!-- Photo File Input -->
-      <input id="fp1" type="file" class="hidden" x-ref="photo" x-on:change="
-                          photoName = $refs.photo.files[0].name;
-                          const reader = new FileReader();
-                          reader.onload = (e) => {
-                              photoPreview = e.target.result;
-                          };
-                          reader.readAsDataURL($refs.photo.files[0]);
-      ">
-
+      <input id="fp1" type="file" class="hidden">
       <label class="font-mono block text-gray-700 text-base font-bold mb-2 text-center" for="photo">
         Fingerprint 1 <span class="text-red-600"> </span>
       </label>
 
       <div class="text-center">
         <!-- Current Profile Photo -->
-        <div class="mt-2" x-show="! photoPreview">
-          <img src="https://images.unsplash.com/photo-1531316282956-d38457be0993?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" class="w-60 h-60 m-auto rounded-full shadow">
+        <div class="mt-2 rounded-full ">
+          <img id="f1" src="https://images.unsplash.com/photo-1531316282956-d38457be0993?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" class="block w-40 h-40 rounded-full m-auto shadow">
         </div>
-        <!-- New Profile Photo Preview -->
-        <div class="mt-2" x-show="photoPreview" style="display: none;">
-          <span class="block w-40 h-40 rounded-full m-auto shadow" x-bind:style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'" style="background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url('null');">
-          </span>
-        </div>
-        <button type="button" class="font-mono inline-flex items-center px-4 py-2 bg-white border border-blue-300 bg-blue-700 rounded-md font-semibold text-xs text-white uppercase tracking-widest shadow-sm hover focus:outline-none focus:border-blue-400 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 mt-2 ml-3"
-          x-on:click.prevent="$refs.photo.click()">
+
+        <button id="fp1_upload" type="button" class="font-mono inline-flex items-center px-4 py-2 bg-white border border-blue-300 bg-blue-700 rounded-md font-semibold text-xs text-white uppercase tracking-widest shadow-sm hover focus:outline-none focus:border-blue-400 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 mt-2 ml-3">
           Select New Photo
         </button>
       </div>
     </div>
 
     <div x-data="{photoName: null, photoPreview: null}" class="">
-      <!-- Photo File Input -->
-      <input id="fp2" type="file" class="hidden" x-ref="photo" x-on:change="
-                          photoName = $refs.photo.files[0].name;
-                          const reader = new FileReader();
-                          reader.onload = (e) => {
-                              photoPreview = e.target.result;
-                          };
-                          reader.readAsDataURL($refs.photo.files[0]);
-      ">
-
+      <input id="fp2" type="file" class="hidden">
       <label class="font-mono block text-gray-700 text-base font-bold mb-2 text-center" for="photo">
-        Fingerprint 2<span class="text-red-600"> </span>
+        Fingerprint 2 <span class="text-red-600"> </span>
       </label>
 
       <div class="text-center">
         <!-- Current Profile Photo -->
-        <div class="mt-2" x-show="! photoPreview">
-          <img src="https://images.unsplash.com/photo-1531316282956-d38457be0993?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" class="w-60 h-60 m-auto rounded-full shadow">
+        <div class="mt-2 rounded-full ">
+          <img id="f2" src="https://images.unsplash.com/photo-1531316282956-d38457be0993?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" class="block w-40 h-40 rounded-full m-auto shadow">
         </div>
-        <!-- New Profile Photo Preview -->
-        <div class="mt-2" x-show="photoPreview" style="display: none;">
-          <span class="block w-40 h-40 rounded-full m-auto shadow" x-bind:style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'" style="background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url('null');">
-          </span>
-        </div>
-        <button type="button" class="font-mono inline-flex items-center px-4 py-2 bg-white border border-blue-300 bg-blue-700 rounded-md font-semibold text-xs text-white uppercase tracking-widest shadow-sm hover focus:outline-none focus:border-blue-400 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 mt-2 ml-3"
-          x-on:click.prevent="$refs.photo.click()">
+
+        <button id="fp2_upload" type="button" class="font-mono inline-flex items-center px-4 py-2 bg-white border border-blue-300 bg-blue-700 rounded-md font-semibold text-xs text-white uppercase tracking-widest shadow-sm hover focus:outline-none focus:border-blue-400 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 mt-2 ml-3">
           Select New Photo
         </button>
       </div>
@@ -164,9 +138,10 @@
 </body>
 
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.js" defer></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script src="{{ url_for('static', filename='js/main.js')}}" charset="utf-8"></script>
-
 
 <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.0/dist/alpine.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/gh/alpine-collective/alpine-magic-helpers@0.3.x/dist/index.js"></script>

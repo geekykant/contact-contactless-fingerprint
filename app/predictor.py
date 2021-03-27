@@ -1,5 +1,9 @@
 import tflit, cv2, numpy as np
-model = tflit.Model('../model/model.tflite')
+import os
+
+dirname = os.path.dirname(__file__)
+model_path = os.path.join(dirname, '../model/model.tflite')
+model = tflit.Model(model_path)
 
 #Contactless images testing (REAL PART)
 def two_image_prediction(np_img1, np_img2):

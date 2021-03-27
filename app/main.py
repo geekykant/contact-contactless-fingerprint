@@ -1,5 +1,5 @@
 import os, sys
-from predictor import two_image_prediction
+from .predictor import two_image_prediction
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 from flask import Flask, render_template, request, redirect, url_for, Response
@@ -52,6 +52,3 @@ def request_entity_too_large(error):
 @app.errorhandler(503)
 def request_model_not_responding(error):
     return 'Model is Not responding', 503
-
-if __name__=="__main__":
-    app.run(debug=True)

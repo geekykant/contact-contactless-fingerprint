@@ -4,3 +4,4 @@ opencv-python==4.2.0.32
 tflit==0.0.16
 jsonpickle==2.0.0
 gunicorn==19.9.0
+opencv-python-headless==4.2.0.32

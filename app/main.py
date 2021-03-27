@@ -17,6 +17,7 @@ def home():
 @app.route('/', methods=['POST', 'GET'])
 def get_data():
     if request.method == 'POST':
+        print(request.files)
         fp1 = request.files['fp1'].read()
         fp2 = request.files['fp2'].read()
 

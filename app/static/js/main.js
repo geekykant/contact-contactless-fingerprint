@@ -135,7 +135,7 @@ $(function() {
             processData: false,
             contentType: false,
             success: function(result) {
-              console.log(result);
+              // console.log(result);
               const accuracy = result['accuracy'];
               if (accuracy > 85) {
                 $('#pred_emoji').attr('x-text', "`👍`");

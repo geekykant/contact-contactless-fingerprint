@@ -58,7 +58,7 @@
     </div> -->
 
 
-  <div class="absolute top-0 inset-x-0 p-2 transition transform origin-top-right md:hidden">
+  <!-- <div class="absolute top-0 inset-x-0 p-2 transition transform origin-top-right md:hidden">
     <div class="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white divide-y-2 divide-gray-50">
       <div class="pt-5 pb-6 px-5">
         <div class="flex items-center justify-between">
@@ -69,10 +69,10 @@
       </div>
     </div>
   </div>
-  </div>
+  </div> -->
 
 
-  <div class="min-h-0 py-10 px-60 grid grid-cols-2">
+  <div class="min-h-0 md:py-10 py-5 md:px-60 grid grid-cols-2">
     <div x-data="{photoName: null, photoPreview: null}" class="">
       <!-- Photo File Input -->
       <input id="fp1" type="file" class="hidden">
@@ -135,9 +135,9 @@
         </svg>
         <span id="pred_emoji" class="absolute text-2xl text-blue-700" x-text="`🤔`"></span>
       </div>
-      <p class="ml-10 font-medium text-gray-600 sm:text-xl">Accuracy</p>
+      <p class="ml-10 font-medium text-gray-600 text-xs md:text-xl">Accuracy</p>
 
-      <span id="accuracy_text" class="ml-auto text-xl font-medium text-blue-600 hidden sm:block">0.00%</span>
+      <span id="accuracy_text" class="ml-auto text-xs font-medium text-blue-600 md:text-xl">0.00%</span>
     </div>
   </div>
 

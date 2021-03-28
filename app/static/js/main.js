@@ -23,6 +23,28 @@ $(function() {
       $('#fp2').click();
     });
 
+    let sample_check1 = false, sample_check2 = false
+
+    $('#fp1_sample').click(() => {
+      $image_crop1.croppie('bind', {
+        url: '/static/img/sample_fingerprint.png',
+        zoom: 0
+      }).then(function() {
+        console.log('sample finger 1 added');
+        sample_check1 = true
+      });
+    });
+
+    $('#fp2_sample').click(() => {
+      $image_crop2.croppie('bind', {
+        url: '/static/img/sample_fingerprint.png',
+        zoom: 0
+      }).then(function() {
+        console.log('sample finger 2 added');
+        sample_check2 = true
+      });
+    });
+
     $('#fp1').on('change', function() {
       var reader = new FileReader();
       reader.onload = function(event) {
@@ -73,8 +95,12 @@ $(function() {
       return $('#fp1').prop('files').length != 0 && $('#fp2').prop('files').length != 0
     }
 
+    const validateSampleFiles = () => {
+      return sample_check1 && sample_check2
+    }
+
     function sendFileToPredictor() {
-      if (!validateFiles()) {
+      if (!validateFiles() && !validateSampleFiles()) {
         alert("You haven't inputted 2 images!");
         return;
       }

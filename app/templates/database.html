@@ -46,9 +46,9 @@
         <div class="flex m-auto">
           <a href="/">
             <span class="sr-only">Contactless FP</span>
-            <img class="h-12 w-auto sm:h-12" src="{{ url_for('static', filename='logo.png')}}" alt="">
+            <img class="h-10 w-auto sm:h-10" src="{{ url_for('static', filename='logo.png')}}" alt="">
           </a>
-          <h3 class="font-mono px-3 py-3 text-xl">Fingerprint Database</h3>
+          <h3 class="font-mono px-2 py-2 text-lg"> {{ title }}</h3>
         </div>
       </div>
     </div>
@@ -59,42 +59,71 @@
         <!-- Photo File Input -->
         <input id="fp1" type="file" class="hidden">
         <label class="font-mono block text-gray-700 text-base font-bold mb-2 text-center" for="photo">
-          Upload New Fingerprint <span class="text-red-600"> </span>
+          Upload New Fingerprint
         </label>
 
         <div class="text-center">
           <div class="mt-2 rounded-full ">
             <img id="f1" src="https://images.unsplash.com/photo-1531316282956-d38457be0993?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" class="block w-40 h-40 rounded-full m-auto shadow">
           </div>
+
+          {% if detection_page %}
           <div class="mb-3 m-5 pt-0">
             <input id="upload_label" type="text" placeholder="Fingerprint Label" class="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-2 shadow w-60" />
           </div>
+          {% endif %}
 
+          {% if detection_page %}
           <button id="fp1_upload" type="button" class="font-mono inline-flex items-center px-4 py-2 bg-white border border-blue-300 bg-blue-700 rounded-md font-semibold text-xs text-white uppercase tracking-widest shadow-sm hover focus:outline-none focus:border-blue-400 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 mt-2 ml-3">
-            Select New Photo
+            Select Photo
           </button>
           <button id="upload_to_db" type="button" class="font-mono inline-flex items-center px-4 py-2 bg-white border border-blue-300 bg-blue-700 rounded-md font-semibold text-xs text-white uppercase tracking-widest shadow-sm hover focus:outline-none focus:border-blue-400 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 mt-2 ml-3">
-            Submit
+            Upload
           </button>
+          {% else %}
+          <button id="fp1_upload" type="button" class="font-mono inline-flex items-center px-4 py-2 bg-white border border-blue-300 bg-blue-700 rounded-md font-semibold text-xs text-white uppercase tracking-widest shadow-sm hover focus:outline-none focus:border-blue-400 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 mt-2 ml-3">
+            Upload Photo
+          </button>
+          <button id="predict_with_db" type="button" class="font-mono inline-flex items-center px-4 py-2 bg-white border border-blue-300 bg-red-500 rounded-md font-semibold text-xs text-white uppercase tracking-widest shadow-sm hover focus:outline-none focus:border-blue-400 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 mt-2 ml-3">
+            Predict
+          </button>
+          {% endif %}
+
         </div>
+
+        <svg version="1.1" class="hidden" id="progress" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve" style="height: 100px;width: 100px;margin: auto;">
+          <path fill="#000" d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
+            <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s" from="0 50 50" to="360 50 50" repeatCount="indefinite" />
+          </path>
+        </svg>
+
       </div>
 
       <!-- rest of right half-->
-      <div class="col-start-2 grid grid-cols-4 gap-4">
+      <div>
         {% if fps %}
-          {% for fp in fps %}
-          <div class="text-center">
-          <div class="mt-2 rounded-full ">
-            <img id="db_{{ fp['id'] }}" src="{{ fp['url'] }}" class="block w-25 h-25 rounded-full shadow-md">
-          </div>
-          <label class="font-mono block font-bold text-gray-700 text-sm mb-2 text-center" for="photo">
-            {{ fp['label'] }} <span class="text-red-600"> </span>
+        <div class="text-center">
+          <label class="font-mono text-gray-700 text-base font-bold">
+            All Database Fingerprints
           </label>
-          </div>
-          {% endfor %}
+        </div>
         {% endif %}
 
-        <!-- <div class="text-center">
+        <div class="col-start-2 grid grid-cols-4 gap-4">
+          {% if fps %}
+          {% for fp in fps %}
+          <div class="text-center">
+            <div class="mt-2 rounded-full ">
+              <img id="db_{{ fp['label'] }}" src="{{ fp['url'] }}" class="block w-25 h-25 rounded-full shadow-md">
+            </div>
+            <label class="font-mono block font-bold text-gray-700 text-sm mb-2 text-center" for="photo">
+              {{ fp['label'] }} <span class="text-red-600"> </span>
+            </label>
+          </div>
+          {% endfor %}
+          {% endif %}
+
+          <!-- <div class="text-center">
           <div class="mt-2 rounded-full ">
             <img id="f1" src="https://images.unsplash.com/photo-1531316282956-d38457be0993?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" class="block w-25 h-25 object-contain rounded-full shadow">
           </div>
@@ -103,9 +132,10 @@
           </label>
         </div> -->
 
+        </div>
+
+
       </div>
-
-
     </div>
 
 </body>

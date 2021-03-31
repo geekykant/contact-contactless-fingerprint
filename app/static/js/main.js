@@ -160,6 +160,9 @@ $(function() {
       });
     }
 
+    const hideProgresss = () => $('#progress').addClass("hidden");
+    const showProgresss = () => $('#progress').removeClass("hidden");
+
     //sending new fingerprint to database
     $("#upload_to_db").click(e => {
       e.preventDefault();
@@ -183,6 +186,8 @@ $(function() {
       formData.append('fp1', fp1, fp1.name);
       formData.append('fp_label', label);
 
+      showProgresss();
+
       $.ajax({
         type: "POST",
         url: "/upload_to_db",
@@ -196,6 +201,42 @@ $(function() {
         error: function(err) {
           alert(err);
           console.log(err);
+          hideProgresss();
+        }
+      });
+    }
+
+    //sending new fingerprint to database
+    $("#predict_with_db").click(e => {
+      e.preventDefault();
+      predictWithDb();
+    });
+
+    function predictWithDb() {
+      if (!validateSingleFile()) {
+        alert(`Fingerprint image not uploaded!`);
+        return;
+      }
+
+      var formData = new FormData();
+      const fp1 = $('#fp1').prop('files')[0];
+      formData.append('fp1', fp1, fp1.name);
+
+      showProgresss();
+      $.ajax({
+        type: "POST",
+        url: "/predict_with_db",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(result) {
+          console.log(result);
+          hideProgresss();
+        },
+        error: function(err) {
+          alert(err);
+          console.log(err);
+          hideProgresss();
         }
       });
     }

@@ -1,5 +1,5 @@
 import os, sys
-from .predictor import two_image_prediction
+from . import predictor
 from . import enhancer
 from . import utils
 
@@ -13,7 +13,13 @@ app = Flask(__name__, template_folder='templates')
 # render default webpage
 @app.route('/')
 def home():
-    return render_template('index.html')
+    stored_fp = utils.getAllImagesFromDatabase()
+    return render_template('database.html', fps=stored_fp, detection_page=False, title="Fingerprint Prediction")
+
+# render default analyze page
+@app.route('/analyze')
+def analyze():
+    return render_template('analyze.html')
 
 # when the post method detect, then redirect to success function
 @app.route('/', methods=['POST', 'GET'])
@@ -38,7 +44,7 @@ def get_data():
         prediction_result = -1
 
         try:
-            prediction = two_image_prediction(fp1img, fp2img) * 100
+            prediction = predictor.two_image_prediction(fp1img, fp2img) * 100
             prediction_result = float("%.5f" %prediction)
         except Exception as e:
             print(e)
@@ -52,7 +58,7 @@ def get_data():
 @app.route('/database')
 def database_home():
     stored_fp = utils.getAllImagesFromDatabase()
-    return render_template('database.html', fps=stored_fp)
+    return render_template('database.html', fps=stored_fp, detection_page=True, title="Fingerprint Database")
 
 # when the post method detect, then redirect to success function
 @app.route('/upload_to_db', methods=['POST'])
@@ -71,6 +77,29 @@ def store_fingerprint():
 
         response = {'status': 'Saved successfully!'}
         response_pickled = jsonpickle.encode(response)
+        return Response(response=response_pickled, status=200, mimetype="application/json")
+
+@app.route('/predict_with_db', methods=['POST'])
+def predictWithDb():
+    if request.method == 'POST':
+        fp = request.files['fp1'].read()
+
+        fpimg = np.frombuffer(fp, np.uint8)
+        fpimg = cv2.imdecode(fpimg, cv2.IMREAD_GRAYSCALE)
+
+        out1 = enhancer.basicEnhancing(fpimg)
+        main_img = enhancer.advancedEnhancing(out1)
+        all_db_imgs = utils.getAllImagesFromDatabase()
+
+        pred_result = None
+        try:
+            pred_result = predictor.getPredictionDb(main_img, all_db_imgs)
+            pred_result['accuracy'] = float("%.5f" %(pred_result['accuracy']))
+        except Exception as e:
+            print(e)
+            return Response(response={'status': 'Predction Problem! Check image size, maybe.'}, status=503, mimetype="application/json")
+
+        response_pickled = jsonpickle.encode(pred_result)
         return Response(response=response_pickled, status=200, mimetype="application/json")
 
 #get all stored fingerprints database -> json

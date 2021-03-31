@@ -47,8 +47,8 @@ with tf.device('/cpu:0'):
 	(model, feature_model) = build_model()
 
 	# load model
-	model_path = '../model/fp160.h5'
-	model_feature_path = '../model/fp160_feature.h5'
+	model_path = '../model/blake_77.h5'
+	model_feature_path = '../model/blake_feature_77.h5'
 	feature_model = tf.keras.models.load_model(model_feature_path, compile=False)
 	model = tf.keras.models.load_model(model_path, compile=False)
 
@@ -56,5 +56,5 @@ with tf.device('/cpu:0'):
 	converter = tf.lite.TFLiteConverter.from_keras_model(model)
 	tflite_model = converter.convert()
 	# Save the model.
-	with open('model.tflite', 'wb') as f:
+	with open('new_model.tflite', 'wb') as f:
 		f.write(tflite_model)

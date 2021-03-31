@@ -23,7 +23,8 @@ $(function() {
       $('#fp2').click();
     });
 
-    let sample_check1 = false, sample_check2 = false
+    let sample_check1 = false,
+      sample_check2 = false
 
     $('#fp1_sample').click(() => {
       $image_crop1.croppie('bind', {
@@ -72,18 +73,18 @@ $(function() {
     });
 
     function makeblob(dataURL) {
-        const BASE64_MARKER = ';base64,';
-        const parts = dataURL.split(BASE64_MARKER);
-        const contentType = parts[0].split(':')[1];
-        const raw = window.atob(parts[1]);
-        const rawLength = raw.length;
-        const uInt8Array = new Uint8Array(rawLength);
+      const BASE64_MARKER = ';base64,';
+      const parts = dataURL.split(BASE64_MARKER);
+      const contentType = parts[0].split(':')[1];
+      const raw = window.atob(parts[1]);
+      const rawLength = raw.length;
+      const uInt8Array = new Uint8Array(rawLength);
 
-        for (let i = 0; i < rawLength; ++i) {
-            uInt8Array[i] = raw.charCodeAt(i);
-        }
+      for (let i = 0; i < rawLength; ++i) {
+        uInt8Array[i] = raw.charCodeAt(i);
+      }
 
-        return new Blob([uInt8Array], { type: contentType });
+      return new Blob([uInt8Array], {type: contentType});
     }
 
     $("#predict_submit").click(e => {
@@ -93,6 +94,10 @@ $(function() {
 
     const validateFiles = () => {
       return $('#fp1').prop('files').length != 0 && $('#fp2').prop('files').length != 0
+    }
+
+    const validateSingleFile = () => {
+      return $('#fp1').prop('files').length != 0
     }
 
     const validateSampleFiles = () => {
@@ -153,7 +158,47 @@ $(function() {
           });
         })
       });
-
     }
+
+    //sending new fingerprint to database
+    $("#upload_to_db").click(e => {
+      e.preventDefault();
+      sendFingerprintToDatabase();
+    });
+
+    function sendFingerprintToDatabase() {
+      if (!validateSingleFile()) {
+        alert(`Fingerprint image not uploaded!`);
+        return;
+      }
+
+      if (!$('#upload_label').val()) {
+        alert(`Fingerprint Label can't be empty!`);
+        return;
+      }
+
+      var formData = new FormData();
+      const fp1 = $('#fp1').prop('files')[0];
+      const label = $('#upload_label').val().trim();
+      formData.append('fp1', fp1, fp1.name);
+      formData.append('fp_label', label);
+
+      $.ajax({
+        type: "POST",
+        url: "/upload_to_db",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(result) {
+          // console.log(result);
+          window.location = '/database'
+        },
+        error: function(err) {
+          alert(err);
+          console.log(err);
+        }
+      });
+    }
+
   });
 });

@@ -3,13 +3,13 @@ $(function() {
     const crop_format = {
       enableExif: true,
       viewport: {
-        width: 160,
-        height: 160,
+        width: 300,
+        height: 300,
         type: 'circle' //circle
       },
       boundary: {
-        width: 200,
-        height: 200
+        width: 300,
+        height: 300
       }
     };
 
@@ -28,7 +28,7 @@ $(function() {
 
     $('#fp1_sample').click(() => {
       $image_crop1.croppie('bind', {
-        url: '/static/img/sample_fingerprint.png',
+        url: '/static/img/sample_fingerprint.jpg',
         zoom: 0
       }).then(function() {
         console.log('sample finger 1 added');
@@ -38,7 +38,7 @@ $(function() {
 
     $('#fp2_sample').click(() => {
       $image_crop2.croppie('bind', {
-        url: '/static/img/sample_fingerprint.png',
+        url: '/static/img/sample_fingerprint.jpg',
         zoom: 0
       }).then(function() {
         console.log('sample finger 2 added');
@@ -135,7 +135,7 @@ $(function() {
 
           $.ajax({
             type: "POST",
-            url: "/",
+            url: "/two_image_prediction",
             data: formData,
             processData: false,
             contentType: false,
@@ -187,7 +187,6 @@ $(function() {
       formData.append('fp_label', label);
 
       showProgresss();
-
       $.ajax({
         type: "POST",
         url: "/upload_to_db",
@@ -196,7 +195,8 @@ $(function() {
         contentType: false,
         success: function(result) {
           // console.log(result);
-          window.location = '/database'
+          // window.location = '/database'
+          location.reload(true);
         },
         error: function(err) {
           alert(err);
@@ -231,6 +231,11 @@ $(function() {
         contentType: false,
         success: function(result) {
           console.log(result);
+          let {all_preds, best_pred} = result;
+          all_preds.forEach( (pred) => {
+            $(`#${pred['html_id']}_acc`).text('(' + pred['accuracy'].toFixed(3) + ')').removeClass('text-green-600').addClass('text-red-600');
+          });
+          $(`#${best_pred['html_id']}_acc`).removeClass('text-red-600').addClass('text-green-600');
           hideProgresss();
         },
         error: function(err) {

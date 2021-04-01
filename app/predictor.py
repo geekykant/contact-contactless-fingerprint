@@ -18,6 +18,7 @@ def getPredictionDb(main_img, all_db_imgs):
 	best_pred = 0.00
 	best_html_id = "db_null"
 	matched_person = "null"
+	all_preds = []
 
 	main_img = np.array(main_img, dtype='uint8')
 
@@ -33,12 +34,15 @@ def getPredictionDb(main_img, all_db_imgs):
 		if db_img.shape != (160, 160):
 			db_img = cv2.resize(db_img, (160, 160))
 
-		pred = two_image_prediction(main_img, db_img)
+		pred = float("%.5f" %(two_image_prediction(main_img, db_img)))
+		all_preds.append({"html_id": f"db_{file['label']}", "accuracy": pred * 100})
+
 		# print(pred)
 		if pred > best_pred:
 			best_pred = pred
 			matched_person = file['label']
 			best_html_id = f"db_{matched_person}"
 
-	result = {"html_id": best_html_id, "accuracy": best_pred * 100, "matched_person": matched_person}
-	return result
+	best_pred = {"html_id": best_html_id, "accuracy": best_pred * 100, "matched_person": matched_person}
+	full_result = {"all_preds": all_preds, "best_pred": best_pred}
+	return full_result

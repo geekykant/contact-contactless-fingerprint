@@ -22,10 +22,9 @@ def analyze():
     return render_template('analyze.html')
 
 # when the post method detect, then redirect to success function
-@app.route('/', methods=['POST', 'GET'])
+@app.route('/two_image_prediction', methods=['POST', 'GET'])
 def get_data():
     if request.method == 'POST':
-        print(request.files)
         fp1 = request.files['fp1'].read()
         fp2 = request.files['fp2'].read()
 
@@ -71,8 +70,8 @@ def store_fingerprint():
         fpimg = np.frombuffer(fp, np.uint8)
         fpimg = cv2.imdecode(fpimg, cv2.IMREAD_GRAYSCALE)
 
-        out1 = enhancer.basicEnhancing(fpimg)
-        enhanced_image = enhancer.advancedEnhancing(out1)
+        enhanced_image = enhancer.basicEnhancing(fpimg)
+        enhanced_image = enhancer.advancedEnhancing(enhanced_image)
         utils.saveImageToDatabase(label, enhanced_image)
 
         response = {'status': 'Saved successfully!'}
@@ -94,7 +93,7 @@ def predictWithDb():
         pred_result = None
         try:
             pred_result = predictor.getPredictionDb(main_img, all_db_imgs)
-            pred_result['accuracy'] = float("%.5f" %(pred_result['accuracy']))
+            pred_result['best_pred']['accuracy'] = float("%.5f" %(pred_result['best_pred']['accuracy']))
         except Exception as e:
             print(e)
             return Response(response={'status': 'Predction Problem! Check image size, maybe.'}, status=503, mimetype="application/json")

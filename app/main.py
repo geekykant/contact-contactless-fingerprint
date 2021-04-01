@@ -13,6 +13,11 @@ app = Flask(__name__, template_folder='templates')
 # render default webpage
 @app.route('/')
 def home():
+    # for i in range(1, 5):
+    #     img1 = cv2.imread(f'{i}.png', cv2.IMREAD_GRAYSCALE)
+    #     for j in range(1,5):
+    #         img2 = cv2.imread(f'{j}.png', cv2.IMREAD_GRAYSCALE)
+    #         print( i, j, predictor.two_image_prediction(img1, img2) * 100)
     stored_fp = utils.getAllImagesFromDatabase()
     return render_template('database.html', fps=stored_fp, detection_page=False, title="Fingerprint Prediction")
 

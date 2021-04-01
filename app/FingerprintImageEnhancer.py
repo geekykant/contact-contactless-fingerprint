@@ -13,8 +13,8 @@ class FingerprintImageEnhancer(object):
         self.block_sigma = 7
         self.orient_smooth_sigma = 7
         self.ridge_freq_blksze = 38
-        self.ridge_freq_windsze = 25 #width change (thick -> 15) (default -> 5)
-        self.min_wave_length = 5
+        self.ridge_freq_windsze = 15 #width change (thick -> 15) (default -> 5)
+        self.min_wave_length = 7
         self.max_wave_length = 15
         self.kx = 0.65
         self.ky = 0.65
@@ -495,7 +495,7 @@ class FingerprintImageEnhancer(object):
         # print(image)
         # print(255 - image)
 
-    def enhance(self, img, resize=True):
+    def enhance(self, img, resize=False):
         # main function to enhance the image.
         # calls all other subroutines
 

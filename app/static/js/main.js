@@ -142,7 +142,7 @@ $(function() {
             success: function(result) {
               // console.log(result);
               const accuracy = result['accuracy'];
-              if (accuracy > 85) {
+              if (accuracy > 80) {
                 $('#pred_emoji').attr('x-text', "`👍`");
               } else {
                 $('#pred_emoji').attr('x-text', "`❌`");

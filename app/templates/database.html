@@ -5,6 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>Fingerprint DeepLearning</title>
 
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png')}}" />
@@ -117,7 +120,10 @@
               <img id="db_{{ fp['label'] }}" src="{{ fp['url'] }}" class="block w-25 h-25 rounded-full shadow-md">
             </div>
             <label class="font-mono block font-bold text-gray-700 text-sm mb-2 text-center" for="photo">
-              {{ fp['label'] }} <span class="text-red-600"> </span>
+              {{ fp['label'] }}
+              {% if not detection_page %}
+              <span id="db_{{ fp['label'] }}_acc" class="text-red-600 block"></span>
+              {% endif %}
             </label>
           </div>
           {% endfor %}

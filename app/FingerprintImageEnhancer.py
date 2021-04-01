@@ -7,13 +7,13 @@ import scipy
 
 class FingerprintImageEnhancer(object):
     def __init__(self):
-        self.ridge_segment_blksze = 16
+        self.ridge_segment_blksze = 32
         self.ridge_segment_thresh = 0.1
         self.gradient_sigma = 1
         self.block_sigma = 7
         self.orient_smooth_sigma = 7
         self.ridge_freq_blksze = 38
-        self.ridge_freq_windsze = 5
+        self.ridge_freq_windsze = 25 #width change (thick -> 15) (default -> 5)
         self.min_wave_length = 5
         self.max_wave_length = 15
         self.kx = 0.65

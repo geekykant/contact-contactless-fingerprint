@@ -2,3 +2,5 @@ model/fp160*
 __pycache__/
 .DS_Store
 model/build*
+app/static/db_fingerprints/*.jpg
+app/static/db_fingerprints/*.png

@@ -11,6 +11,10 @@ def two_image_prediction(np_img1, np_img2):
 	input2_img = np_img2.reshape((1, 160, 160, 1)).astype(np.float32) / 255.
 	pred_right = model.predict([input1_img, input2_img])
 
+	db_path = join(dirname, 'static/test_preds')
+	cv2.imwrite(join(db_path, 'img1' + ".jpg"), np_img1)
+	cv2.imwrite(join(db_path, 'img2' + ".jpg"), np_img2)
+
 	return pred_right[0][0]
 
 #Testing with all other database images

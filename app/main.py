@@ -9,6 +9,7 @@ import cv2, jsonpickle, numpy as np
 
 # start flask
 app = Flask(__name__, template_folder='templates')
+app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024 #16 MB
 
 # render default webpage
 @app.route('/')
@@ -123,7 +124,7 @@ def test():
 
 @app.errorhandler(413)
 def request_entity_too_large(error):
-    return 'File Too Large', 413
+    return 'File Too Large (Must be less than 2MB)', 413
 
 @app.errorhandler(503)
 def request_model_not_responding(error):

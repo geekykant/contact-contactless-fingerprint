@@ -4,3 +4,4 @@ __pycache__/
 model/build*
 app/static/db_fingerprints/*.jpg
 app/static/db_fingerprints/*.png
+test_images/

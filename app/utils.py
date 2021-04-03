@@ -1,4 +1,5 @@
-from os.path import join, dirname, basename
+from os.path import join, dirname, basename, exists
+from os import makedirs
 from glob import glob
 import cv2
 import numpy as np
@@ -21,6 +22,8 @@ def getAllImagesFromDatabase():
     return sorted(db_json, key=lambda k: k['label'])
 
 def saveImageToDatabase(label, img):
+    if not exists(db_path):
+        makedirs(db_path)
     # img = cropCircleImage(img)
     cv2.imwrite(join(db_path, label + ".jpg"), img)
 

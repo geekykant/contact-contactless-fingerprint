@@ -3,6 +3,10 @@ from . import predictor
 from . import enhancer
 from . import utils
 
+import sys
+print("Python version")
+print (sys.version)
+
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 from flask import Flask, render_template, request, redirect, url_for, Response
 import cv2, jsonpickle, numpy as np

@@ -1,4 +1,4 @@
-## Contact Fingerprint Recognition - Deep Learning
+## Contact Fingerprint Recognition - Deep Learning 🖐
 
 The fingerprint classification is conducted on PolyU's (Hong Kong Polytechnic University) research database with 336 individuals. Our approach introduces computer vision pre-processing methods to capture regions of interest in fingerprint images to allow effective feature extraction.
 

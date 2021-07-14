@@ -49,8 +49,6 @@ with tf.device('/cpu:0'):
 
 	# load model
 	model_path = '../model/build4/10_70_fp160.h5'
-	model_feature_path = '../model/build4/10_70_fp160_feature.h5'
-	feature_model = tf.keras.models.load_model(join(dirname, model_feature_path), compile=False)
 	model = tf.keras.models.load_model(join(dirname, model_path), compile=False)
 
 	#convert the model

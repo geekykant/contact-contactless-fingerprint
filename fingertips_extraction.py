@@ -14,10 +14,7 @@ def saveFingerCrop(i, box, frame_2):
 	src_pts = box.astype("float32")
 	# coordinate of the points in box points after the rectangle has been
 	# straightened
-	dst_pts = np.array([[0, height-1],
-						[0, 0],
-						[width-1, 0],
-						[width-1, height-1]], dtype="float32")
+	dst_pts = np.array([[0, height-1],[0, 0],[width-1, 0],[width-1, height-1]], dtype="float32")
 
 	# the perspective transformation matrix
 	M = cv2.getPerspectiveTransform(src_pts, dst_pts)

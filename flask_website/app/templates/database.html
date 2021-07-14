@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>Fingerprint DeepLearning</title>
+
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png')}}" />
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')}}">
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- This example requires Tailwind CSS v2.0+ -->
+  <!-- <div class="bg-indigo-600">
+    <div class="max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between flex-wrap">
+        <div class="w-0 flex-1 flex items-center">
+          <span class="flex p-2 rounded-lg bg-indigo-800">
+            <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+            </svg>
+          </span>
+          <p class="ml-3 font-medium text-white truncate">
+            <span class="md:hidden">
+              This project is on beta version!
+            </span>
+            <span class="hidden md:inline">
+              This project is currectly under development. See more soon!
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+
+  <div class="relative bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
+        <div class="flex m-auto">
+          <a href="/">
+            <span class="sr-only">Contactless FP</span>
+            <img class="h-10 w-auto sm:h-10" src="{{ url_for('static', filename='logo.png')}}" alt="">
+          </a>
+          <h3 class="font-mono px-2 py-2 text-lg"> {{ title }}</h3>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="min-h-0 md:py-8 py-8 md:px-20 grid grid-cols-2">
+      <div x-data="{photoName: null, photoPreview: null}" class="w-2/3">
+        <!-- Photo File Input -->
+        <input id="fp1" type="file" class="hidden">
+        <label class="font-mono block text-gray-700 text-base font-bold mb-2 text-center" for="photo">
+          Upload New Fingerprint
+        </label>
+
+        <div class="text-center">
+          <div class="mt-2 rounded-full ">
+            <img id="f1" src="https://images.unsplash.com/photo-1623519056574-f2fa8ee805d2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=50" class="block w-40 h-40 rounded-full m-auto shadow">
+          </div>
+
+          {% if detection_page %}
+          <div class="mb-3 m-5 pt-0">
+            <input id="upload_label" type="text" placeholder="Fingerprint Label" class="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-2 shadow w-60" />
+          </div>
+          {% endif %}
+
+          {% if detection_page %}
+          <button id="fp1_upload" type="button" class="font-mono inline-flex items-center px-4 py-2 bg-white border border-blue-300 bg-blue-700 rounded-md font-semibold text-xs text-white uppercase tracking-widest shadow-sm hover focus:outline-none focus:border-blue-400 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 mt-2 ml-3">
+            Select Photo
+          </button>
+          <button id="upload_to_db" type="button" class="font-mono inline-flex items-center px-4 py-2 bg-white border border-blue-300 bg-blue-700 rounded-md font-semibold text-xs text-white uppercase tracking-widest shadow-sm hover focus:outline-none focus:border-blue-400 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 mt-2 ml-3">
+            Upload
+          </button>
+          {% else %}
+          <button id="fp1_upload" type="button" class="font-mono inline-flex items-center px-4 py-2 bg-white border border-blue-300 bg-blue-700 rounded-md font-semibold text-xs text-white uppercase tracking-widest shadow-sm hover focus:outline-none focus:border-blue-400 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 mt-2 ml-3">
+            Upload Photo
+          </button>
+          <button id="predict_with_db" type="button" class="font-mono inline-flex items-center px-4 py-2 bg-white border border-blue-300 bg-red-500 rounded-md font-semibold text-xs text-white uppercase tracking-widest shadow-sm hover focus:outline-none focus:border-blue-400 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 mt-2 ml-3">
+            Predict
+          </button>
+          {% endif %}
+
+        </div>
+
+        <svg version="1.1" class="hidden" id="progress" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve" style="height: 100px;width: 100px;margin: auto;">
+          <path fill="#000" d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
+            <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s" from="0 50 50" to="360 50 50" repeatCount="indefinite" />
+          </path>
+        </svg>
+
+      </div>
+
+      <!-- rest of right half-->
+      <div>
+        {% if fps %}
+        <div class="text-center">
+          <label class="font-mono text-gray-700 text-base font-bold">
+            Fingerprint Result
+          </label>
+        </div>
+        {% endif %}
+
+        <div class="text-left">
+          <div class="text-center">
+            <div class="mt-2 rounded-full ">
+              <img id="result_best_image" style="height:250px !important" src="" class="block w-25 h-25 m-auto rounded-full shadow-md">
+            </div>
+            <label id="result_best_label" class="pt-8 font-mono block font-bold text-gray-700 text-sm mb-2 text-center" for="photo">
+            </label>
+            <span id="result_best_acc" class="text-green-600 block font-mono block font-bold"></span>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+    <div class="relative mt-12">
+      {% if fps %}
+      <div class="text-center">
+        <label class="font-mono text-gray-700 text-base font-bold">
+          All Database Fingerprints (2976 Samples - 336 Classes)
+        </label>
+      </div>
+      {% endif %}
+
+      <div class="col-start-2 ml-32 mr-32 mt-10 grid grid-cols-10 gap-4">
+        {% if fps %}
+        {% for fp in fps %}
+        <div class="text-center">
+          <div class="mt-2 rounded-full ">
+            <img id="db_{{ fp['label'] }}" src="{{url_for('download_file', filepath='' + fp['url']) }}" class="block w-25 h-25 rounded-full shadow-md">
+          </div>
+          <label class="font-mono block font-bold text-gray-700 text-sm mb-2 text-center" for="photo">
+            {{ fp['label'] }}
+            {% if not detection_page %}
+            <span id="db_{{ fp['label'] }}_acc" class="text-red-600 block"></span>
+            {% endif %}
+          </label>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+      </div>
+
+
+    </div>
+
+</body>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.js" defer></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename='js/main.js')}}" charset="utf-8"></script>
+
+<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.0/dist/alpine.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/alpine-collective/alpine-magic-helpers@0.3.x/dist/index.js"></script>
+
+</html>

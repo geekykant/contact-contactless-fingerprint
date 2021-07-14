@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>Fingerprint DeepLearning</title>
+
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png')}}" />
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')}}">
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- This example requires Tailwind CSS v2.0+ -->
+  <div class="bg-indigo-600">
+    <div class="max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between flex-wrap">
+        <div class="w-0 flex-1 flex items-center">
+          <span class="flex p-2 rounded-lg bg-indigo-800">
+            <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+            </svg>
+          </span>
+          <p class="ml-3 font-medium text-white truncate">
+            <span class="md:hidden">
+              This project is on beta version!
+            </span>
+            <span class="hidden md:inline">
+              This project is currectly under development. See more soon!
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- <div class="relative bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
+        <div class="flex justify-start lg:w-0 lg:flex-1">
+          <a href="/">
+            <span class="sr-only">Contactless FP</span>
+            <img class="h-12 w-auto sm:h-12" src="{{ url_for('static', filename='logo.png')}}" alt="">
+          </a>
+        </div>
+
+        <nav class="md:flex space-x-10 text-gray-500 ">
+          <span>Fingerprint Detection</span>
+        </nav>
+
+      </div>
+    </div> -->
+
+
+  <!-- <div class="absolute top-0 inset-x-0 p-2 transition transform origin-top-right md:hidden">
+    <div class="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white divide-y-2 divide-gray-50">
+      <div class="pt-5 pb-6 px-5">
+        <div class="flex items-center justify-between">
+          <div>
+            <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Workflow">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div> -->
+
+
+  <div class="min-h-0 md:py-10 py-5 md:px-60 grid grid-cols-2">
+    <div x-data="{photoName: null, photoPreview: null}" class="">
+      <!-- Photo File Input -->
+      <input id="fp1" type="file" class="hidden">
+      <label class="font-mono block text-gray-700 text-base font-bold mb-2 text-center" for="photo">
+        Fingerprint 1 <span class="text-red-600"> </span>
+      </label>
+
+      <div class="text-center">
+        <!-- Current Profile Photo -->
+        <div class="mt-2 rounded-full ">
+          <img id="f1" src="https://images.unsplash.com/photo-1531316282956-d38457be0993?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" class="block w-40 h-40 rounded-full m-auto shadow">
+        </div>
+
+        <button id="fp1_upload" type="button" class="font-mono inline-flex items-center px-4 py-2 bg-white border border-blue-300 bg-blue-700 rounded-md font-semibold text-xs text-white uppercase tracking-widest shadow-sm hover focus:outline-none focus:border-blue-400 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 mt-2 ml-3">
+          Select New Photo
+        </button>
+        <button id="fp1_sample" type="button" class="font-mono inline-flex items-center px-4 py-2 bg-white border border-blue-300 bg-blue-700 rounded-md font-semibold text-xs text-white uppercase tracking-widest shadow-sm hover focus:outline-none focus:border-blue-400 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 mt-2 ml-3">
+          Use Sample
+        </button>
+      </div>
+    </div>
+
+    <div x-data="{photoName: null, photoPreview: null}" class="">
+      <input id="fp2" type="file" class="hidden">
+      <label class="font-mono block text-gray-700 text-base font-bold mb-2 text-center" for="photo">
+        Fingerprint 2 <span class="text-red-600"> </span>
+      </label>
+
+      <div class="text-center">
+        <!-- Current Profile Photo -->
+        <div class="mt-2 rounded-full ">
+          <img id="f2" src="https://images.unsplash.com/photo-1531316282956-d38457be0993?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" class="block w-40 h-40 rounded-full m-auto shadow">
+        </div>
+
+        <button id="fp2_upload" type="button" class="font-mono inline-flex items-center px-4 py-2 bg-white border border-blue-300 bg-blue-700 rounded-md font-semibold text-xs text-white uppercase tracking-widest shadow-sm hover focus:outline-none focus:border-blue-400 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 mt-2 ml-3">
+          Select New Photo
+        </button>
+        <button id="fp2_sample" type="button" class="font-mono inline-flex items-center px-4 py-2 bg-white border border-blue-300 bg-blue-700 rounded-md font-semibold text-xs text-white uppercase tracking-widest shadow-sm hover focus:outline-none focus:border-blue-400 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 mt-2 ml-3">
+          Use Sample
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-white font-mono flex flex-col">
+    <div class="flex flex-row-reverse flex-wrap m-auto">
+      <button id="predict_submit" class="rounded px-3 py-2 m-1 border-b-4 border-l-2 shadow-lg bg-blue-700 border-blue-800 text-white">
+        Predict
+      </button>
+    </div>
+  </div>
+
+
+  <div class="min-h-0 py-10 px-10">
+    <div id="accuracy_circle" class="flex items-center m-auto flex-wrap max-w-md px-10 bg-white shadow-xl rounded-2xl h-20" x-data="{ circumference: 50 * 2 * Math.PI, percent: 0 }">
+      <div class="flex items-center justify-center -m-6 overflow-hidden bg-white rounded-full">
+        <svg class="w-32 h-32 transform translate-x-1 translate-y-1" x-cloak aria-hidden="true">
+          <circle class="text-gray-300" stroke-width="10" stroke="currentColor" fill="transparent" r="50" cx="60" cy="60" />
+          <circle class="text-blue-700" stroke-width="10" :stroke-dasharray="circumference" :stroke-dashoffset="circumference - percent / 100 * circumference" stroke-linecap="round" stroke="currentColor" fill="transparent" r="50" cx="60" cy="60" />
+        </svg>
+        <span id="pred_emoji" class="absolute text-2xl text-blue-700" x-text="`🤔`"></span>
+      </div>
+      <p class="ml-10 font-medium text-gray-600 text-xs md:text-xl">Accuracy</p>
+
+      <span id="accuracy_text" class="ml-auto text-xs font-medium text-blue-600 md:text-xl">0.00%</span>
+    </div>
+  </div>
+
+</body>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.js" defer></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename='js/main.js')}}" charset="utf-8"></script>
+
+<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.0/dist/alpine.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/alpine-collective/alpine-magic-helpers@0.3.x/dist/index.js"></script>
+
+</html>

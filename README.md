@@ -25,3 +25,6 @@ The fingerprint classification is conducted on PolyU's (Hong Kong Polytechnic Un
 - [@sid03](https://www.linkedin.com/in/sidheesh-nair-03859516a/)
 - [Md. Salman Ali](https://www.linkedin.com/in/mohammedsalmanali/)
 - [Sivaprasad PT](mailto:sivaprasadpt002@gmail.com)
+
+### References
+-  Chenhao Lin, Ajay Kumar, "Matching Contactless and Contact-based Conventional Fingerprint Images for Biometrics Identification," IEEE Transactions on Image Processing, vol. 27, pp. 2008-2021, April 2018.
